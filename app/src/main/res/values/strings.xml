@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Premier League Darts</string>
+
+    <string name="welcome_message">Murrayfield Sports Bar - Premier League Darts!</string>
+    <string name="navigation_message">Use the menu bar to navigate to Fixtures, Results, League Tables &amp; Achievements.</string>
+
+    <string name="fixture_activity">fixture_activity</string>
+    <string name="player_activity">player_activity</string>
+
+    <string name="achievements_menu">Achievements</string>
+    <string name="fixtures_menu_text">Fixtures</string>
+    <string name="home_menu_text">Home</string>
+    <string name="players_menu_text">Players</string>
+    <string name="results_menu_text">Results</string>
+    <string name="tables_menu_text">Tables</string>
+
+    <color name="white">#FFFFFF</color>
+    <string name="title_activity_player">Players</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_fixture">Fixtures</string>
+</resources>
