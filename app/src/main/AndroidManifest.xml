@@ -26,6 +26,10 @@
             android:name=".FixtureActivity"
             android:label="@string/title_activity_fixture" >
         </activity>
+        <activity
+            android:name=".WeekActivity"
+            android:label="@string/title_activity_week" >
+        </activity>
     </application>
 
 </manifest>

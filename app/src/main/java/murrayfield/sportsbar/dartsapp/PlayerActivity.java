@@ -60,6 +60,10 @@ public class PlayerActivity extends AppCompatActivity implements AsyncResponse {
                 break;
             case R.id.tables_menu_text:
                 break;
+            case R.id.weeks_menu_text:
+                intent = new Intent(this, WeekActivity.class);
+                this.startActivity(intent);
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
