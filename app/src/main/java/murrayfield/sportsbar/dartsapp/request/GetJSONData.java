@@ -41,7 +41,7 @@ public class GetJSONData extends AsyncTask<String, String, String> {
                 result.append(line);
             }
 
-        }catch( Exception e) {
+        }catch(Exception e) {
             e.printStackTrace();
         }
         finally {
@@ -66,6 +66,9 @@ public class GetJSONData extends AsyncTask<String, String, String> {
                 break;
             case RESULTS:
                 endpoint = Endpoint.RESULTS;
+                break;
+            case WEEKS:
+                endpoint = Endpoint.WEEKS;
                 break;
         }
 

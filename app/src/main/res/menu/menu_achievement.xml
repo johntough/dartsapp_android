@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="murrayfield.sportsbar.dartsapp.AchievementActivity">
+    <item android:id="@+id/home_menu_text" android:title="@string/home_menu_text"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/players_menu_text" android:title="@string/players_menu_text"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/weeks_menu_text" android:title="@string/weeks_menu_text"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/fixtures_menu_text" android:title="@string/fixtures_menu_text"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/results_menu_text" android:title="@string/results_menu_text"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/tables_menu_text" android:title="@string/tables_menu_text"
+        android:orderInCategory="100" app:showAsAction="never" />
+</menu>

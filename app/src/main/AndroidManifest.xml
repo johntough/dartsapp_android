@@ -3,6 +3,7 @@
     package="murrayfield.sportsbar.dartsapp" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -29,6 +30,18 @@
         <activity
             android:name=".WeekActivity"
             android:label="@string/title_activity_week" >
+        </activity>
+        <activity
+            android:name=".ResultActivity"
+            android:label="@string/title_activity_results" >
+        </activity>
+        <activity
+            android:name=".TableActivity"
+            android:label="@string/title_activity_table" >
+        </activity>
+        <activity
+            android:name=".AchievementActivity"
+            android:label="@string/title_activity_achievement" >
         </activity>
     </application>
 

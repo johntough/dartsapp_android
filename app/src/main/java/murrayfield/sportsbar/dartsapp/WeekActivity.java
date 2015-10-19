@@ -1,5 +1,6 @@
 package murrayfield.sportsbar.dartsapp;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,16 +18,22 @@ import org.json.JSONObject;
 import murrayfield.sportsbar.dartsapp.request.AsyncResponse;
 import murrayfield.sportsbar.dartsapp.request.GetJSONData;
 
-public class WeekActivity extends AppCompatActivity implements AsyncResponse {
+public class WeekActivity extends BaseActivity implements AsyncResponse {
 
     GetJSONData asyncTask = new GetJSONData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_week);
-        asyncTask.delegate = this;
-        asyncTask.execute("http://nodejs-dartsapp.rhcloud.com/weeks", "WEEKS");
+
+        if (!isConnectedToInternet()) {
+            // popup to inform user of no internet connection
+            onCreateDialogNoInternetConnection().show();
+        } else {
+            setContentView(R.layout.activity_week);
+            asyncTask.delegate = this;
+            asyncTask.execute("http://nodejs-dartsapp.rhcloud.com/weeks", "WEEKS");
+        }
     }
 
     @Override
@@ -47,6 +54,8 @@ public class WeekActivity extends AppCompatActivity implements AsyncResponse {
         //noinspection SimplifiableIfStatement
         switch (id) {
             case  R.id.achievements_menu:
+                intent = new Intent(this, AchievementActivity.class);
+                this.startActivity(intent);
                 break;
             case R.id.fixtures_menu_text:
                 intent = new Intent(this, FixtureActivity.class);
@@ -61,8 +70,12 @@ public class WeekActivity extends AppCompatActivity implements AsyncResponse {
                 this.startActivity(intent);
                 break;
             case R.id.results_menu_text:
+                intent = new Intent(this, ResultActivity.class);
+                this.startActivity(intent);
                 break;
             case R.id.tables_menu_text:
+                intent = new Intent(this, TableActivity.class);
+                this.startActivity(intent);
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -76,9 +89,6 @@ public class WeekActivity extends AppCompatActivity implements AsyncResponse {
 
         if (endpoint == Endpoint.WEEKS) {
             TableLayout table = new TableLayout(this);
-
-            table.setStretchAllColumns(true);
-            table.setShrinkAllColumns(true);
 
             JSONObject jObject;
             JSONArray jArray = null;
@@ -104,10 +114,12 @@ public class WeekActivity extends AppCompatActivity implements AsyncResponse {
                     TableRow weekRow = new TableRow(this);
 
                     TextView nameLabel = new TextView(this);
+                    nameLabel.setWidth(800);
                     nameLabel.setText(name);
 
                     TextView dateLabel = new TextView(this);
                     dateLabel.setText(date);
+                    dateLabel.setWidth(800);
 
                     weekRow.addView(nameLabel);
                     weekRow.addView(dateLabel);

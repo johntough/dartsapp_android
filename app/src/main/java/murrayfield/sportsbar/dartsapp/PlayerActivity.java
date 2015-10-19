@@ -17,16 +17,22 @@ import org.json.JSONObject;
 import murrayfield.sportsbar.dartsapp.request.AsyncResponse;
 import murrayfield.sportsbar.dartsapp.request.GetJSONData;
 
-public class PlayerActivity extends AppCompatActivity implements AsyncResponse {
+public class PlayerActivity extends BaseActivity implements AsyncResponse {
 
     GetJSONData asyncTask = new GetJSONData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_player);
-        asyncTask.delegate = this;
-        asyncTask.execute("http://nodejs-dartsapp.rhcloud.com/players", "PLAYERS");
+
+        if (!isConnectedToInternet()) {
+            // popup to inform user of no internet connection
+            onCreateDialogNoInternetConnection().show();
+        } else {
+            setContentView(R.layout.activity_player);
+            asyncTask.delegate = this;
+            asyncTask.execute("http://nodejs-dartsapp.rhcloud.com/players", "PLAYERS");
+        }
     }
 
     @Override
@@ -47,6 +53,8 @@ public class PlayerActivity extends AppCompatActivity implements AsyncResponse {
         //noinspection SimplifiableIfStatement
         switch (id) {
             case  R.id.achievements_menu:
+                intent = new Intent(this, AchievementActivity.class);
+                this.startActivity(intent);
                 break;
             case R.id.fixtures_menu_text:
                 intent = new Intent(this, FixtureActivity.class);
@@ -57,8 +65,12 @@ public class PlayerActivity extends AppCompatActivity implements AsyncResponse {
                 this.startActivity(intent);
                 break;
             case R.id.results_menu_text:
+                intent = new Intent(this, ResultActivity.class);
+                this.startActivity(intent);
                 break;
             case R.id.tables_menu_text:
+                intent = new Intent(this, TableActivity.class);
+                this.startActivity(intent);
                 break;
             case R.id.weeks_menu_text:
                 intent = new Intent(this, WeekActivity.class);
@@ -108,13 +120,13 @@ public class PlayerActivity extends AppCompatActivity implements AsyncResponse {
                     // This ensures only forename and surname are displayed in the table
                     playerNameArray = playerForename.split("\\s+");
                     if (playerNameArray.length > 2) {
-                        playerForename = playerNameArray[0] + " " + playerNameArray[1];
+                        playerForename = playerNameArray[0];
                     }
                     // This ensures only forename and surname are displayed in the table
                     playerSurname = objectInArray.getString("surname");
                     playerNameArray = playerSurname.split("\\s+");
                     if (playerNameArray.length > 2) {
-                        playerSurname = playerNameArray[0] + " " + playerNameArray[1];
+                        playerSurname = playerNameArray[0];
                     }
 
                     TableRow playerRow = new TableRow(this);

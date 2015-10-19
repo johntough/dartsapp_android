@@ -17,16 +17,22 @@ import org.json.JSONObject;
 import murrayfield.sportsbar.dartsapp.request.AsyncResponse;
 import murrayfield.sportsbar.dartsapp.request.GetJSONData;
 
-public class FixtureActivity extends AppCompatActivity implements AsyncResponse {
+public class FixtureActivity extends BaseActivity implements AsyncResponse {
 
     GetJSONData asyncTask = new GetJSONData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fixture);
-        asyncTask.delegate = this;
-        asyncTask.execute("http://nodejs-dartsapp.rhcloud.com/fixtures", "FIXTURES");
+
+        if (!isConnectedToInternet()) {
+            // popup to inform user of no internet connection
+            onCreateDialogNoInternetConnection().show();
+        } else {
+            setContentView(R.layout.activity_fixture);
+            asyncTask.delegate = this;
+            asyncTask.execute("http://nodejs-dartsapp.rhcloud.com/fixtures", "FIXTURES");
+        }
     }
 
     @Override
@@ -47,6 +53,8 @@ public class FixtureActivity extends AppCompatActivity implements AsyncResponse 
         Intent intent;
         switch (id) {
             case  R.id.achievements_menu:
+                intent = new Intent(this, AchievementActivity.class);
+                this.startActivity(intent);
                 break;
             case R.id.home_menu_text:
                 intent = new Intent(this, HomeActivity.class);
@@ -56,8 +64,12 @@ public class FixtureActivity extends AppCompatActivity implements AsyncResponse 
                 intent = new Intent(this, PlayerActivity.class);
                 this.startActivity(intent);
             case R.id.results_menu_text:
+                intent = new Intent(this, ResultActivity.class);
+                this.startActivity(intent);
                 break;
             case R.id.tables_menu_text:
+                intent = new Intent(this, TableActivity.class);
+                this.startActivity(intent);
                 break;
             case R.id.weeks_menu_text:
                 intent = new Intent(this, WeekActivity.class);
@@ -76,9 +88,6 @@ public class FixtureActivity extends AppCompatActivity implements AsyncResponse 
         if (endpoint == Endpoint.FIXTURES) {
             TableLayout table = new TableLayout(this);
 
-            table.setStretchAllColumns(true);
-            table.setShrinkAllColumns(true);
-
             JSONObject jObject;
             JSONArray jArray = null;
             try {
@@ -94,7 +103,7 @@ public class FixtureActivity extends AppCompatActivity implements AsyncResponse 
                 String playerOne;
                 String playerTwo;
                 String venue;
-                int orderOfPlay;
+                String orderOfPlay;
                 String weekDate;
                 try {
                     objectInArray = jArray.getJSONObject(i);
@@ -117,24 +126,29 @@ public class FixtureActivity extends AppCompatActivity implements AsyncResponse 
                     }
 
                     venue = objectInArray.getString("venue");
-                    orderOfPlay = objectInArray.getInt("orderOfPlay");
+                    orderOfPlay = "Order of Play: " + Integer.toString(objectInArray.getInt("orderOfPlay"));
 
                     TableRow fixtureRow = new TableRow(this);
 
                     TextView weekDateLabel = new TextView(this);
                     weekDateLabel.setText(weekDate);
+                    weekDateLabel.setWidth(800);
 
                     TextView playerOneLabel = new TextView(this);
                     playerOneLabel.setText(playerOne);
+                    playerOneLabel.setWidth(600);
 
                     TextView playerTwoLabel = new TextView(this);
                     playerTwoLabel.setText(playerTwo);
+                    playerTwoLabel.setWidth(600);
 
                     TextView venueLabel = new TextView(this);
                     venueLabel.setText(venue);
+                    venueLabel.setWidth(200);
 
                     TextView orderOfPlayLabel = new TextView(this);
-                    orderOfPlayLabel.setText(Integer.toString(orderOfPlay));
+                    orderOfPlayLabel.setText(orderOfPlay);
+                    orderOfPlayLabel.setWidth(400);
 
                     fixtureRow.addView(weekDateLabel);
                     fixtureRow.addView(playerOneLabel);
