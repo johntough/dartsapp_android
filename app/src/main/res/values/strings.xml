@@ -33,11 +33,9 @@
     <string name="name_label_text">Name</string>
     <string name="order_of_play_label_text">Order of Play</string>
     <string name="player_one_label_text">Player One</string>
+    <string name="legs_won_label_text">Legs</string>
     <string name="player_two_label_text">Player Two</string>
     <string name="week_name_label_text">Week Name</string>
-
-    <string name="fixture_activity">fixture_activity</string>
-    <string name="player_activity">player_activity</string>
 
     <color name="white">#FFFFFF</color>
 </resources>
