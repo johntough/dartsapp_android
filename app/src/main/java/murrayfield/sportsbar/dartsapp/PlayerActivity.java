@@ -1,7 +1,6 @@
 package murrayfield.sportsbar.dartsapp;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -89,11 +88,9 @@ public class PlayerActivity extends BaseActivity implements AsyncResponse {
         if (endpoint == Endpoint.PLAYERS) {
             TableLayout table = new TableLayout(this);
 
-            table.setStretchAllColumns(true);
-            table.setShrinkAllColumns(true);
-
             JSONObject jObject;
             JSONArray jArray = null;
+
             try {
                 jObject = new JSONObject(output);
                 jArray = jObject.getJSONArray("players");
@@ -101,48 +98,58 @@ public class PlayerActivity extends BaseActivity implements AsyncResponse {
                 e.printStackTrace();
             }
 
-            for (int i = 0; i < jArray.length(); i++) {
+            if (jArray != null) {
 
-                JSONObject objectInArray;
+                // converting value from dps to pixels using the display scale factor
+                final float scale = this.getResources().getDisplayMetrics().density;
+                int groupWidthPx = (int) (120 * scale + 0.5f);
+                int nameWidthPx = (int) (200 * scale + 0.5f);
 
-                String playerForename;
-                String playerSurname;
-                String group;
-                try {
-                    objectInArray = jArray.getJSONObject(i);
+                for (int i = 0; i < jArray.length(); i++) {
 
-                    group = objectInArray.getString("group");
+                    JSONObject objectInArray;
 
-                    playerForename = objectInArray.getString("forename");
+                    String playerForename;
+                    String playerSurname;
+                    String group;
+                    try {
+                        objectInArray = jArray.getJSONObject(i);
 
-                    String[] playerNameArray;
+                        group = objectInArray.getString("group");
 
-                    // This ensures only forename and surname are displayed in the table
-                    playerNameArray = playerForename.split("\\s+");
-                    if (playerNameArray.length > 2) {
-                        playerForename = playerNameArray[0];
+                        playerForename = objectInArray.getString("forename");
+
+                        String[] playerNameArray;
+
+                        // This ensures only forename and surname are displayed in the table
+                        playerNameArray = playerForename.split("\\s+");
+                        if (playerNameArray.length > 2) {
+                            playerForename = playerNameArray[0];
+                        }
+                        // This ensures only forename and surname are displayed in the table
+                        playerSurname = objectInArray.getString("surname");
+                        playerNameArray = playerSurname.split("\\s+");
+                        if (playerNameArray.length > 2) {
+                            playerSurname = playerNameArray[0];
+                        }
+
+                        TableRow playerRow = new TableRow(this);
+
+                        TextView groupLabel = new TextView(this);
+                        groupLabel.setText(group);
+                        groupLabel.setWidth(groupWidthPx);
+
+                        TextView playerLabel = new TextView(this);
+                        playerLabel.setText(playerForename + " " + playerSurname);
+                        playerLabel.setWidth(nameWidthPx);
+
+                        playerRow.addView(groupLabel);
+                        playerRow.addView(playerLabel);
+                        table.addView(playerRow);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    // This ensures only forename and surname are displayed in the table
-                    playerSurname = objectInArray.getString("surname");
-                    playerNameArray = playerSurname.split("\\s+");
-                    if (playerNameArray.length > 2) {
-                        playerSurname = playerNameArray[0];
-                    }
-
-                    TableRow playerRow = new TableRow(this);
-
-                    TextView groupLabel = new TextView(this);
-                    groupLabel.setText(group);
-
-                    TextView playerLabel = new TextView(this);
-                    playerLabel.setText(playerForename + " " + playerSurname);
-
-                    playerRow.addView(groupLabel);
-                    playerRow.addView(playerLabel);
-                    table.addView(playerRow);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
 

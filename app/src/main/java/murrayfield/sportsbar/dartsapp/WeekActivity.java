@@ -1,8 +1,6 @@
 package murrayfield.sportsbar.dartsapp;
 
-import android.app.AlertDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -99,34 +97,42 @@ public class WeekActivity extends BaseActivity implements AsyncResponse {
                 e.printStackTrace();
             }
 
-            for (int i = 0; i < jArray.length(); i++) {
+            if (jArray != null) {
 
-                JSONObject objectInArray;
+                // converting value from dps to pixels using the display scale factor
+                final float scale = this.getResources().getDisplayMetrics().density;
+                int nameWidthPx = (int) (275 * scale + 0.5f);
+                int dateWidthPx = (int) (250 * scale + 0.5f);
 
-                String name;
-                String date;
-                try {
-                    objectInArray = jArray.getJSONObject(i);
+                for (int i = 0; i < jArray.length(); i++) {
 
-                    name = objectInArray.getString("name");
-                    date = objectInArray.getString("date");
+                    JSONObject objectInArray;
 
-                    TableRow weekRow = new TableRow(this);
+                    String name;
+                    String date;
+                    try {
+                        objectInArray = jArray.getJSONObject(i);
 
-                    TextView nameLabel = new TextView(this);
-                    nameLabel.setWidth(800);
-                    nameLabel.setText(name);
+                        name = objectInArray.getString("name");
+                        date = objectInArray.getString("date");
 
-                    TextView dateLabel = new TextView(this);
-                    dateLabel.setText(date);
-                    dateLabel.setWidth(800);
+                        TableRow weekRow = new TableRow(this);
 
-                    weekRow.addView(nameLabel);
-                    weekRow.addView(dateLabel);
-                    table.addView(weekRow);
+                        TextView nameLabel = new TextView(this);
+                        nameLabel.setWidth(nameWidthPx);
+                        nameLabel.setText(name);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                        TextView dateLabel = new TextView(this);
+                        dateLabel.setText(date);
+                        dateLabel.setWidth(dateWidthPx);
+
+                        weekRow.addView(nameLabel);
+                        weekRow.addView(dateLabel);
+                        table.addView(weekRow);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 

@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 
@@ -31,7 +30,7 @@ public class BaseActivity extends AppCompatActivity {
                 .setTitle(R.string.title_alert_dialog)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();;
+                        dialog.dismiss();
                     }
                 });
         return builder.create();

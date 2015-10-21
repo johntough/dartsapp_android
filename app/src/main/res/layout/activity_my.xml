@@ -15,6 +15,7 @@
         android:src="@drawable/dartboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        tools:ignore="contentDescription"
         />
 
     <TextView android:text="@string/navigation_message" android:layout_width="wrap_content"

@@ -1,14 +1,15 @@
 <resources>
+    // welcome messages
     <string name="app_name">Premier League Darts</string>
-
     <string name="welcome_message">Murrayfield Sports Bar - Premier League Darts!</string>
     <string name="navigation_message">Use the menu bar to navigate to Fixtures, Results, Players, Weeks, League Tables &amp; Achievements.</string>
 
+    // error / warning messages
+    <string name="title_alert_dialog">Warning</string>
+    <string name="message_alert_no_internet_connection">No internet connection</string>
     <string name="under_construction_message">This feature is currently under construction.</string>
 
-    <string name="fixture_activity">fixture_activity</string>
-    <string name="player_activity">player_activity</string>
-
+    // menu titles
     <string name="achievements_menu">Achievements</string>
     <string name="fixtures_menu_text">Fixtures</string>
     <string name="home_menu_text">Home</string>
@@ -17,17 +18,26 @@
     <string name="tables_menu_text">Tables</string>
     <string name="weeks_menu_text">Weeks</string>
 
-    <color name="white">#FFFFFF</color>
-    <string name="title_activity_player">Players</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    // activity titles
+    <string name="title_activity_achievement">Achievements</string>
     <string name="title_activity_fixture">Fixtures</string>
-    <string name="title_activity_week">Weeks</string>
+    <string name="title_activity_player">Players</string>
     <string name="title_activity_results">Results</string>
     <string name="title_activity_table">Tables</string>
-    <string name="title_activity_achievement">Achievements</string>
+    <string name="title_activity_week">Weeks</string>
 
-    <string name="title_alert_dialog">Warning</string>
-    <string name="message_alert_no_internet_connection">No internet connection</string>
+    // table labels
+    <string name="board_label_text">Board</string>
+    <string name="date_label_text">Date</string>
+    <string name="group_label_text">Group</string>
+    <string name="name_label_text">Name</string>
+    <string name="order_of_play_label_text">Order of Play</string>
+    <string name="player_one_label_text">Player One</string>
+    <string name="player_two_label_text">Player Two</string>
+    <string name="week_name_label_text">Week Name</string>
+
+    <string name="fixture_activity">fixture_activity</string>
+    <string name="player_activity">player_activity</string>
+
+    <color name="white">#FFFFFF</color>
 </resources>

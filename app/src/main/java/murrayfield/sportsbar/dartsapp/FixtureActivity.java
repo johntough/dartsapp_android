@@ -1,7 +1,6 @@
 package murrayfield.sportsbar.dartsapp;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -97,69 +96,88 @@ public class FixtureActivity extends BaseActivity implements AsyncResponse {
                 e.printStackTrace();
             }
 
-            for (int i = 0; i < jArray.length(); i++) {
+            if (jArray != null) {
 
-                JSONObject objectInArray;
-                String playerOne;
-                String playerTwo;
-                String venue;
-                String orderOfPlay;
-                String weekDate;
-                try {
-                    objectInArray = jArray.getJSONObject(i);
+                // converting value from dps to pixels using the display scale factor
+                final float scale = this.getResources().getDisplayMetrics().density;
+                int dateWidthPx = (int) (250 * scale + 0.5f);
+                int groupWidthPx = (int) (100 * scale + 0.5f);
+                int playerWidthPx = (int) (140 * scale + 0.5f);
+                int venueWidthPx = (int) (80 * scale + 0.5f);
+                int orderOfPlayWidthPx = (int) (120 * scale + 0.5f);
 
-                    weekDate = objectInArray.getString("weekDate");
-                    playerOne = objectInArray.getString("playerOne");
+                for (int i = 0; i < jArray.length(); i++) {
 
-                    String[] playerNameArray;
+                    JSONObject objectInArray;
+                    String weekDate;
+                    String group;
+                    String playerOne;
+                    String playerTwo;
+                    String venue;
+                    String orderOfPlay;
+                    try {
+                        objectInArray = jArray.getJSONObject(i);
 
-                    // This ensures only forename and surname are displayed in the table
-                    playerNameArray = playerOne.split("\\s+");
-                    if (playerNameArray.length > 2) {
-                        playerOne = playerNameArray[0] + " " + playerNameArray[1];
+                        weekDate = objectInArray.getString("weekDate");
+                        group = objectInArray.getString("group");
+
+                        playerOne = objectInArray.getString("playerOne");
+
+                        String[] playerNameArray;
+
+                        // This ensures only forename and surname are displayed in the table
+                        playerNameArray = playerOne.split("\\s+");
+                        if (playerNameArray.length > 2) {
+                            playerOne = playerNameArray[0] + " " + playerNameArray[1];
+                        }
+                        // This ensures only forename and surname are displayed in the table
+                        playerTwo = objectInArray.getString("playerTwo");
+                        playerNameArray = playerTwo.split("\\s+");
+                        if (playerNameArray.length > 2) {
+                            playerTwo = playerNameArray[0] + " " + playerNameArray[1];
+                        }
+
+                        venue = objectInArray.getString("venue");
+                        orderOfPlay = Integer.toString(objectInArray.getInt("orderOfPlay"));
+
+                        TableRow fixtureRow = new TableRow(this);
+
+                        TextView weekDateLabel = new TextView(this);
+                        weekDateLabel.setText(weekDate);
+                        weekDateLabel.setWidth(dateWidthPx);
+
+                        TextView groupLabel = new TextView(this);
+                        groupLabel.setText(group);
+                        groupLabel.setWidth(groupWidthPx);
+
+                        TextView playerOneLabel = new TextView(this);
+                        playerOneLabel.setText(playerOne);
+                        playerOneLabel.setWidth(playerWidthPx);
+
+                        TextView playerTwoLabel = new TextView(this);
+                        playerTwoLabel.setText(playerTwo);
+                        playerTwoLabel.setWidth(playerWidthPx);
+
+                        TextView venueLabel = new TextView(this);
+                        venueLabel.setText(venue);
+                        venueLabel.setWidth(venueWidthPx);
+
+                        TextView orderOfPlayLabel = new TextView(this);
+                        orderOfPlayLabel.setText(orderOfPlay);
+                        orderOfPlayLabel.setWidth(orderOfPlayWidthPx);
+
+                        fixtureRow.addView(weekDateLabel);
+                        fixtureRow.addView(groupLabel);
+                        fixtureRow.addView(playerOneLabel);
+                        fixtureRow.addView(playerTwoLabel);
+                        fixtureRow.addView(venueLabel);
+                        fixtureRow.addView(orderOfPlayLabel);
+
+                        table.addView(fixtureRow);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    // This ensures only forename and surname are displayed in the table
-                    playerTwo = objectInArray.getString("playerTwo");
-                    playerNameArray = playerTwo.split("\\s+");
-                    if (playerNameArray.length > 2) {
-                        playerTwo = playerNameArray[0] + " " + playerNameArray[1];
-                    }
-
-                    venue = objectInArray.getString("venue");
-                    orderOfPlay = "Order of Play: " + Integer.toString(objectInArray.getInt("orderOfPlay"));
-
-                    TableRow fixtureRow = new TableRow(this);
-
-                    TextView weekDateLabel = new TextView(this);
-                    weekDateLabel.setText(weekDate);
-                    weekDateLabel.setWidth(800);
-
-                    TextView playerOneLabel = new TextView(this);
-                    playerOneLabel.setText(playerOne);
-                    playerOneLabel.setWidth(600);
-
-                    TextView playerTwoLabel = new TextView(this);
-                    playerTwoLabel.setText(playerTwo);
-                    playerTwoLabel.setWidth(600);
-
-                    TextView venueLabel = new TextView(this);
-                    venueLabel.setText(venue);
-                    venueLabel.setWidth(200);
-
-                    TextView orderOfPlayLabel = new TextView(this);
-                    orderOfPlayLabel.setText(orderOfPlay);
-                    orderOfPlayLabel.setWidth(400);
-
-                    fixtureRow.addView(weekDateLabel);
-                    fixtureRow.addView(playerOneLabel);
-                    fixtureRow.addView(playerTwoLabel);
-                    fixtureRow.addView(venueLabel);
-                    fixtureRow.addView(orderOfPlayLabel);
-
-                    table.addView(fixtureRow);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
 
