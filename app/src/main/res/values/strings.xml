@@ -10,10 +10,11 @@
     <string name="under_construction_message">This feature is currently under construction.</string>
 
     // menu titles
-    <string name="player180_menu">180s</string>
     <string name="fixtures_menu_text">Fixtures</string>
+    <string name="high_finish_menu_text">High Finishes</string>
     <string name="home_menu_text">Home</string>
     <string name="players_menu_text">Players</string>
+    <string name="player180_menu_text">180s</string>
     <string name="results_menu_text">Results</string>
     <string name="tables_menu_text">Tables</string>
     <string name="weeks_menu_text">Weeks</string>
@@ -21,6 +22,7 @@
     // activity titles
     <string name="title_activity_player180">180s</string>
     <string name="title_activity_fixture">Fixtures</string>
+    <string name="title_activity_high_finish">High Finishes</string>
     <string name="title_activity_player">Players</string>
     <string name="title_activity_results">Results</string>
     <string name="title_activity_table">Tables</string>
@@ -29,9 +31,9 @@
     // table labels
     <string name="best_legs_label_text">Best Legs</string>
     <string name="board_label_text">Board</string>
+    <string name="checkout_label_text">Checkout</string>
     <string name="date_label_text">Date</string>
     <string name="group_label_text">Group</string>
-    <string name="highest_checkouts_label_text">Highest Checkouts</string>
     <string name="legs_won_label_text">Legs</string>
     <string name="most_180s_label_text">Most 180s</string>
     <string name="name_label_text">Name</string>

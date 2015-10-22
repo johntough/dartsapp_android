@@ -34,11 +34,15 @@ public class HomeActivity extends BaseActivity {
                 intent = new Intent(this, FixtureActivity.class);
                 this.startActivity(intent);
                 break;
+            case R.id.high_finish_menu_text:
+                intent = new Intent(this, HighFinishActivity.class);
+                this.startActivity(intent);
+                break;
             case R.id.players_menu_text:
                 intent = new Intent(this, PlayerActivity.class);
                 this.startActivity(intent);
                 break;
-            case  R.id.player180_menu:
+            case  R.id.player180_menu_text:
                 intent = new Intent(this, Player180Activity.class);
                 this.startActivity(intent);
                 break;

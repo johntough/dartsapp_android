@@ -56,6 +56,10 @@ public class Player180Activity extends BaseActivity implements AsyncResponse {
                 intent = new Intent(this, FixtureActivity.class);
                 this.startActivity(intent);
                 break;
+            case R.id.high_finish_menu_text:
+                intent = new Intent(this, HighFinishActivity.class);
+                this.startActivity(intent);
+                break;
             case R.id.home_menu_text:
                 intent = new Intent(this, HomeActivity.class);
                 this.startActivity(intent);

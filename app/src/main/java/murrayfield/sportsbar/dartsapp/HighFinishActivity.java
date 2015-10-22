@@ -16,7 +16,7 @@ import org.json.JSONObject;
 import murrayfield.sportsbar.dartsapp.request.AsyncResponse;
 import murrayfield.sportsbar.dartsapp.request.GetJSONData;
 
-public class PlayerActivity extends BaseActivity implements AsyncResponse {
+public class HighFinishActivity extends BaseActivity implements AsyncResponse {
 
     GetJSONData asyncTask = new GetJSONData();
 
@@ -28,16 +28,16 @@ public class PlayerActivity extends BaseActivity implements AsyncResponse {
             // popup to inform user of no internet connection
             onCreateDialogNoInternetConnection().show();
         } else {
-            setContentView(R.layout.activity_player);
+            setContentView(R.layout.activity_high_finish);
             asyncTask.delegate = this;
-            asyncTask.execute("http://nodejs-dartsapp.rhcloud.com/players", "PLAYERS");
+            asyncTask.execute("http://nodejs-dartsapp.rhcloud.com/highfinishes", "HIGHFINISHES");
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_player, menu);
+        getMenuInflater().inflate(R.menu.menu_high_finish, menu);
         return true;
     }
 
@@ -55,12 +55,12 @@ public class PlayerActivity extends BaseActivity implements AsyncResponse {
                 intent = new Intent(this, FixtureActivity.class);
                 this.startActivity(intent);
                 break;
-            case R.id.high_finish_menu_text:
-                intent = new Intent(this, HighFinishActivity.class);
-                this.startActivity(intent);
-                break;
             case R.id.home_menu_text:
                 intent = new Intent(this, HomeActivity.class);
+                this.startActivity(intent);
+                break;
+            case R.id.players_menu_text:
+                intent = new Intent(this, PlayerActivity.class);
                 this.startActivity(intent);
                 break;
             case  R.id.player180_menu_text:
@@ -89,15 +89,14 @@ public class PlayerActivity extends BaseActivity implements AsyncResponse {
     @Override
     public void processFinish(String output, Endpoint endpoint) {
 
-        if (endpoint == Endpoint.PLAYERS) {
+        if (endpoint == Endpoint.HIGHFINISHES) {
             TableLayout table = new TableLayout(this);
 
             JSONObject jObject;
             JSONArray jArray = null;
-
             try {
                 jObject = new JSONObject(output);
-                jArray = jObject.getJSONArray("players");
+                jArray = jObject.getJSONArray(endpoint.toString().toLowerCase());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -106,50 +105,34 @@ public class PlayerActivity extends BaseActivity implements AsyncResponse {
 
                 // converting value from dps to pixels using the display scale factor
                 final float scale = this.getResources().getDisplayMetrics().density;
-                int groupWidthPx = (int) (120 * scale + 0.5f);
-                int nameWidthPx = (int) (200 * scale + 0.5f);
+                int columnWidthPx = (int) (200 * scale + 0.5f);
 
                 for (int i = 0; i < jArray.length(); i++) {
 
                     JSONObject objectInArray;
 
-                    String playerForename;
-                    String playerSurname;
-                    String group;
+                    String columnOneString;
+                    String columnTwoString;
+
                     try {
                         objectInArray = jArray.getJSONObject(i);
 
-                        group = objectInArray.getString("group");
+                        columnOneString = objectInArray.getString("player");
+                        columnTwoString = objectInArray.getString("checkout");
 
-                        playerForename = objectInArray.getString("forename");
+                        TableRow tableRow = new TableRow(this);
 
-                        String[] playerNameArray;
+                        TextView columnOneLabel = new TextView(this);
+                        columnOneLabel.setWidth(columnWidthPx);
+                        columnOneLabel.setText(columnOneString);
 
-                        // This ensures only forename and surname are displayed in the table
-                        playerNameArray = playerForename.split("\\s+");
-                        if (playerNameArray.length > 2) {
-                            playerForename = playerNameArray[0];
-                        }
-                        // This ensures only forename and surname are displayed in the table
-                        playerSurname = objectInArray.getString("surname");
-                        playerNameArray = playerSurname.split("\\s+");
-                        if (playerNameArray.length > 2) {
-                            playerSurname = playerNameArray[0];
-                        }
+                        TextView columnTwoLabel = new TextView(this);
+                        columnTwoLabel.setText(columnTwoString);
+                        columnTwoLabel.setWidth(columnWidthPx);
 
-                        TableRow playerRow = new TableRow(this);
-
-                        TextView groupLabel = new TextView(this);
-                        groupLabel.setText(group);
-                        groupLabel.setWidth(groupWidthPx);
-
-                        TextView playerLabel = new TextView(this);
-                        playerLabel.setText(playerForename + " " + playerSurname);
-                        playerLabel.setWidth(nameWidthPx);
-
-                        playerRow.addView(groupLabel);
-                        playerRow.addView(playerLabel);
-                        table.addView(playerRow);
+                        tableRow.addView(columnOneLabel);
+                        tableRow.addView(columnTwoLabel);
+                        table.addView(tableRow);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -157,7 +140,7 @@ public class PlayerActivity extends BaseActivity implements AsyncResponse {
                 }
             }
 
-            RelativeLayout main = (RelativeLayout)findViewById(R.id.player_activity);
+            RelativeLayout main = (RelativeLayout)findViewById(R.id.high_finish_activity);
             main.addView(table);
         }
     }
