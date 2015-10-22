@@ -13,6 +13,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
+
 import murrayfield.sportsbar.dartsapp.request.AsyncResponse;
 import murrayfield.sportsbar.dartsapp.request.GetJSONData;
 
@@ -106,37 +110,49 @@ public class HighFinishActivity extends BaseActivity implements AsyncResponse {
                 // converting value from dps to pixels using the display scale factor
                 final float scale = this.getResources().getDisplayMetrics().density;
                 int columnWidthPx = (int) (200 * scale + 0.5f);
+                Map<String, Map<Integer, String>> highFinishMap = new TreeMap<>(Collections.reverseOrder());
 
                 for (int i = 0; i < jArray.length(); i++) {
 
                     JSONObject objectInArray;
 
-                    String columnOneString;
-                    String columnTwoString;
-
                     try {
                         objectInArray = jArray.getJSONObject(i);
 
-                        columnOneString = objectInArray.getString("player");
-                        columnTwoString = objectInArray.getString("checkout");
+                        String player = objectInArray.getString("player");
+                        int checkout = objectInArray.getInt("checkout");
 
-                        TableRow tableRow = new TableRow(this);
+                        Map<Integer, String> mapEntry = new TreeMap<>();
+                        mapEntry.put(
+                            checkout,
+                            player
+                        );
 
-                        TextView columnOneLabel = new TextView(this);
-                        columnOneLabel.setWidth(columnWidthPx);
-                        columnOneLabel.setText(columnOneString);
-
-                        TextView columnTwoLabel = new TextView(this);
-                        columnTwoLabel.setText(columnTwoString);
-                        columnTwoLabel.setWidth(columnWidthPx);
-
-                        tableRow.addView(columnOneLabel);
-                        tableRow.addView(columnTwoLabel);
-                        table.addView(tableRow);
-
+                        highFinishMap.put(
+                            Integer.toString(checkout) + player,
+                            mapEntry
+                        );
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }
+
+                for(Map.Entry<String, Map<Integer, String>> entry : highFinishMap.entrySet()) {
+                    TableRow tableRow = new TableRow(this);
+
+                    Map.Entry<Integer, String> innerEntry = entry.getValue().entrySet().iterator().next();
+
+                    TextView columnOneLabel = new TextView(this);
+                    columnOneLabel.setWidth(columnWidthPx);
+                    columnOneLabel.setText(innerEntry.getValue());
+
+                    TextView columnTwoLabel = new TextView(this);
+                    columnTwoLabel.setText(Integer.toString(innerEntry.getKey()));
+                    columnTwoLabel.setWidth(columnWidthPx);
+
+                    tableRow.addView(columnOneLabel);
+                    tableRow.addView(columnTwoLabel);
+                    table.addView(tableRow);
                 }
             }
 

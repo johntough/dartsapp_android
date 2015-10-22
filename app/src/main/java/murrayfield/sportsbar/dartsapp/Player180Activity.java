@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -13,6 +12,10 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
 
 import murrayfield.sportsbar.dartsapp.request.AsyncResponse;
 import murrayfield.sportsbar.dartsapp.request.GetJSONData;
@@ -91,76 +94,72 @@ public class Player180Activity extends BaseActivity implements AsyncResponse {
     public void processFinish(String output, Endpoint endpoint) {
 
         if (endpoint == Endpoint.PLAYER180s) {
-            RelativeLayout main = (RelativeLayout)findViewById(R.id.player180_activity);
-            TableLayout player180sTable = generateTable(output, endpoint.toString().toLowerCase(), "player", "noOf180s");
-            main.addView(player180sTable);
-        }
-    }
 
-    /**
-     * Generates a TableLayout from a given JSON string
-     *
-     * @param json_input - the json String returned from the REST GET request
-     * @param jsonRoot - the root of the JSON object containing the data
-     * @param columnOne - the name associated with the JSON data in column one of the table
-     * @param columnTwo - the name associated with the JSON data in column two of the table
-     * @return - TableLayout, the populated table from the JSON String
-     */
-    private TableLayout generateTable(
-        String json_input,
-        String jsonRoot,
-        String columnOne,
-        String columnTwo
-    ) {
-        TableLayout table = new TableLayout(this);
+            TableLayout table = new TableLayout(this);
 
-        JSONObject jObject;
-        JSONArray jArray = null;
-        try {
-            jObject = new JSONObject(json_input);
-            jArray = jObject.getJSONArray(jsonRoot);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            JSONObject jObject;
+            JSONArray jArray = null;
+            try {
+                jObject = new JSONObject(output);
+                jArray = jObject.getJSONArray(endpoint.toString().toLowerCase());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-        if (jArray != null) {
+            if (jArray != null) {
 
-            // converting value from dps to pixels using the display scale factor
-            final float scale = this.getResources().getDisplayMetrics().density;
-            int columnWidthPx = (int) (200 * scale + 0.5f);
+                // converting value from dps to pixels using the display scale factor
+                final float scale = this.getResources().getDisplayMetrics().density;
+                int columnWidthPx = (int) (200 * scale + 0.5f);
+                Map<String, Map<Integer, String>> player180Map = new TreeMap<>(Collections.reverseOrder());
 
-            for (int i = 0; i < jArray.length(); i++) {
+                for (int i = 0; i < jArray.length(); i++) {
 
-                JSONObject objectInArray;
+                    JSONObject objectInArray;
 
-                String columnOneString;
-                String columnTwoString;
+                    try {
+                        objectInArray = jArray.getJSONObject(i);
 
-                try {
-                    objectInArray = jArray.getJSONObject(i);
+                        int noOf180s = objectInArray.getInt("noOf180s");
+                        String player = objectInArray.getString("player");
 
-                    columnOneString = objectInArray.getString(columnOne);
-                    columnTwoString = objectInArray.getString(columnTwo);
+                        Map<Integer, String> mapEntry = new TreeMap<>();
+                        mapEntry.put(
+                            noOf180s,
+                            player
+                        );
 
+                        player180Map.put(
+                            Integer.toString(noOf180s) + player,
+                            mapEntry
+                        );
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                for(Map.Entry<String, Map<Integer, String>> entry : player180Map.entrySet()) {
                     TableRow tableRow = new TableRow(this);
+
+                    Map.Entry<Integer, String> innerEntry = entry.getValue().entrySet().iterator().next();
 
                     TextView columnOneLabel = new TextView(this);
                     columnOneLabel.setWidth(columnWidthPx);
-                    columnOneLabel.setText(columnOneString);
+                    columnOneLabel.setText(innerEntry.getValue());
 
                     TextView columnTwoLabel = new TextView(this);
-                    columnTwoLabel.setText(columnTwoString);
+                    columnTwoLabel.setText(Integer.toString(innerEntry.getKey()));
                     columnTwoLabel.setWidth(columnWidthPx);
 
                     tableRow.addView(columnOneLabel);
                     tableRow.addView(columnTwoLabel);
                     table.addView(tableRow);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
+
+            RelativeLayout main = (RelativeLayout)findViewById(R.id.player180_activity);
+            main.addView(table);
         }
-        return table;
     }
 }
