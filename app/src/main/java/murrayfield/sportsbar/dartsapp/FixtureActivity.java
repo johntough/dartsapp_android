@@ -51,10 +51,6 @@ public class FixtureActivity extends BaseActivity implements AsyncResponse {
         //noinspection SimplifiableIfStatement
         Intent intent;
         switch (id) {
-            case  R.id.achievements_menu:
-                intent = new Intent(this, AchievementActivity.class);
-                this.startActivity(intent);
-                break;
             case R.id.home_menu_text:
                 intent = new Intent(this, HomeActivity.class);
                 this.startActivity(intent);
@@ -62,6 +58,11 @@ public class FixtureActivity extends BaseActivity implements AsyncResponse {
             case R.id.players_menu_text:
                 intent = new Intent(this, PlayerActivity.class);
                 this.startActivity(intent);
+                break;
+            case  R.id.player180_menu:
+                intent = new Intent(this, Player180Activity.class);
+                this.startActivity(intent);
+                break;
             case R.id.results_menu_text:
                 intent = new Intent(this, ResultActivity.class);
                 this.startActivity(intent);

@@ -3,7 +3,7 @@ package murrayfield.sportsbar.dartsapp.request;
 public interface AsyncResponse {
 
     enum Endpoint {
-        ACHIEVEMENTS, PLAYERS, FIXTURES, RESULTS, TABLES, WEEKS
+        BESTLEGS, FIXTURES, HIGHFINISHES, PLAYERS, PLAYER180s, RESULTS, TABLES, WEEKS
     }
 
     void processFinish(String output, Endpoint endpoint);

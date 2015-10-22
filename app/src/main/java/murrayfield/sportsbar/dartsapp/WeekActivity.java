@@ -51,10 +51,6 @@ public class WeekActivity extends BaseActivity implements AsyncResponse {
 
         //noinspection SimplifiableIfStatement
         switch (id) {
-            case  R.id.achievements_menu:
-                intent = new Intent(this, AchievementActivity.class);
-                this.startActivity(intent);
-                break;
             case R.id.fixtures_menu_text:
                 intent = new Intent(this, FixtureActivity.class);
                 this.startActivity(intent);
@@ -65,6 +61,10 @@ public class WeekActivity extends BaseActivity implements AsyncResponse {
                 break;
             case R.id.players_menu_text:
                 intent = new Intent(this, PlayerActivity.class);
+                this.startActivity(intent);
+                break;
+            case  R.id.player180_menu:
+                intent = new Intent(this, Player180Activity.class);
                 this.startActivity(intent);
                 break;
             case R.id.results_menu_text:

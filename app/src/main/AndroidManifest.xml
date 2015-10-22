@@ -40,8 +40,8 @@
             android:label="@string/title_activity_table" >
         </activity>
         <activity
-            android:name=".AchievementActivity"
-            android:label="@string/title_activity_achievement" >
+            android:name=".Player180Activity"
+            android:label="@string/title_activity_player180" >
         </activity>
     </application>
 

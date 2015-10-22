@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="murrayfield.sportsbar.dartsapp.AchievementActivity">
+    tools:context="murrayfield.sportsbar.dartsapp.Player180Activity">
     <item android:id="@+id/home_menu_text" android:title="@string/home_menu_text"
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/players_menu_text" android:title="@string/players_menu_text"

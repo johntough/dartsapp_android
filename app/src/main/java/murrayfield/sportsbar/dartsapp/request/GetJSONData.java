@@ -55,23 +55,7 @@ public class GetJSONData extends AsyncTask<String, String, String> {
     @Override
     protected void onPostExecute(String result) {
 
-        Endpoint endpoint = null;
-
-        switch (Endpoint.valueOf(currentEndpoint)) {
-            case FIXTURES:
-                endpoint = Endpoint.FIXTURES;
-                break;
-            case PLAYERS:
-                endpoint = Endpoint.PLAYERS;
-                break;
-            case RESULTS:
-                endpoint = Endpoint.RESULTS;
-                break;
-            case WEEKS:
-                endpoint = Endpoint.WEEKS;
-                break;
-        }
-
+        Endpoint endpoint = Endpoint.valueOf(currentEndpoint);
         delegate.processFinish(result, endpoint);
     }
 }
