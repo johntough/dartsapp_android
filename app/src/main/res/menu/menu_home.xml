@@ -13,6 +13,8 @@
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/high_finish_menu_text" android:title="@string/high_finish_menu_text"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/best_leg_menu_text" android:title="@string/best_leg_menu_text"
+        android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/tables_menu_text" android:title="@string/tables_menu_text"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>

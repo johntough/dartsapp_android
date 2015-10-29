@@ -1,6 +1,7 @@
 package murrayfield.sportsbar.dartsapp;
 
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,13 +14,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
+
 import murrayfield.sportsbar.dartsapp.request.AsyncResponse;
 import murrayfield.sportsbar.dartsapp.request.GetJSONData;
 
-public class PlayerActivity extends BaseActivity implements AsyncResponse {
+public class BestLegActivity extends BaseActivity implements AsyncResponse {
 
     GetJSONData asyncTask = new GetJSONData();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,16 +32,16 @@ public class PlayerActivity extends BaseActivity implements AsyncResponse {
             // popup to inform user of no internet connection
             onCreateDialogNoInternetConnection().show();
         } else {
-            setContentView(R.layout.activity_player);
+            setContentView(R.layout.activity_best_leg);
             asyncTask.delegate = this;
-            asyncTask.execute("http://nodejs-dartsapp.rhcloud.com/players", "PLAYERS");
+            asyncTask.execute("http://nodejs-dartsapp.rhcloud.com/bestlegs/duplicatesremoved", "BESTLEGS");
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_player, menu);
+        getMenuInflater().inflate(R.menu.menu_best_leg, menu);
         return true;
     }
 
@@ -51,10 +55,6 @@ public class PlayerActivity extends BaseActivity implements AsyncResponse {
 
         //noinspection SimplifiableIfStatement
         switch (id) {
-            case R.id.best_leg_menu_text:
-                intent = new Intent(this, BestLegActivity.class);
-                this.startActivity(intent);
-                break;
             case R.id.fixtures_menu_text:
                 intent = new Intent(this, FixtureActivity.class);
                 this.startActivity(intent);
@@ -65,6 +65,10 @@ public class PlayerActivity extends BaseActivity implements AsyncResponse {
                 break;
             case R.id.home_menu_text:
                 intent = new Intent(this, HomeActivity.class);
+                this.startActivity(intent);
+                break;
+            case R.id.players_menu_text:
+                intent = new Intent(this, PlayerActivity.class);
                 this.startActivity(intent);
                 break;
             case  R.id.player180_menu_text:
@@ -92,16 +96,14 @@ public class PlayerActivity extends BaseActivity implements AsyncResponse {
 
     @Override
     public void processFinish(String output, Endpoint endpoint) {
-
-        if (endpoint == Endpoint.PLAYERS) {
+        if (endpoint == Endpoint.BESTLEGS) {
             TableLayout table = new TableLayout(this);
 
             JSONObject jObject;
             JSONArray jArray = null;
-
             try {
                 jObject = new JSONObject(output);
-                jArray = jObject.getJSONArray("players");
+                jArray = jObject.getJSONArray(endpoint.toString().toLowerCase());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -110,58 +112,54 @@ public class PlayerActivity extends BaseActivity implements AsyncResponse {
 
                 // converting value from dps to pixels using the display scale factor
                 final float scale = this.getResources().getDisplayMetrics().density;
-                int groupWidthPx = (int) (120 * scale + 0.5f);
-                int nameWidthPx = (int) (200 * scale + 0.5f);
+                int columnWidthPx = (int) (200 * scale + 0.5f);
+                Map<String, Map<Integer, String>> numberOfDartsMap = new TreeMap<>();
 
                 for (int i = 0; i < jArray.length(); i++) {
 
                     JSONObject objectInArray;
 
-                    String playerForename;
-                    String playerSurname;
-                    String group;
                     try {
                         objectInArray = jArray.getJSONObject(i);
 
-                        group = objectInArray.getString("group");
+                        String player = objectInArray.getString("player");
+                        int numberOfDarts = objectInArray.getInt("numberOfDarts");
 
-                        playerForename = objectInArray.getString("forename");
+                        Map<Integer, String> mapEntry = new TreeMap<>();
+                        mapEntry.put(
+                                numberOfDarts,
+                                player
+                        );
 
-                        String[] playerNameArray;
-
-                        // This ensures only forename and surname are displayed in the table
-                        playerNameArray = playerForename.split("\\s+");
-                        if (playerNameArray.length > 2) {
-                            playerForename = playerNameArray[0];
-                        }
-                        // This ensures only forename and surname are displayed in the table
-                        playerSurname = objectInArray.getString("surname");
-                        playerNameArray = playerSurname.split("\\s+");
-                        if (playerNameArray.length > 2) {
-                            playerSurname = playerNameArray[0];
-                        }
-
-                        TableRow playerRow = new TableRow(this);
-
-                        TextView groupLabel = new TextView(this);
-                        groupLabel.setText(group);
-                        groupLabel.setWidth(groupWidthPx);
-
-                        TextView playerLabel = new TextView(this);
-                        playerLabel.setText(playerForename + " " + playerSurname);
-                        playerLabel.setWidth(nameWidthPx);
-
-                        playerRow.addView(groupLabel);
-                        playerRow.addView(playerLabel);
-                        table.addView(playerRow);
-
+                        numberOfDartsMap.put(
+                                Integer.toString(numberOfDarts) + player,
+                                mapEntry
+                        );
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
+
+                for(Map.Entry<String, Map<Integer, String>> entry : numberOfDartsMap.entrySet()) {
+                    TableRow tableRow = new TableRow(this);
+
+                    Map.Entry<Integer, String> innerEntry = entry.getValue().entrySet().iterator().next();
+
+                    TextView columnOneLabel = new TextView(this);
+                    columnOneLabel.setWidth(columnWidthPx);
+                    columnOneLabel.setText(innerEntry.getValue());
+
+                    TextView columnTwoLabel = new TextView(this);
+                    columnTwoLabel.setText(Integer.toString(innerEntry.getKey()));
+                    columnTwoLabel.setWidth(columnWidthPx);
+
+                    tableRow.addView(columnOneLabel);
+                    tableRow.addView(columnTwoLabel);
+                    table.addView(tableRow);
+                }
             }
 
-            RelativeLayout main = (RelativeLayout)findViewById(R.id.player_activity);
+            RelativeLayout main = (RelativeLayout)findViewById(R.id.best_leg_activity);
             main.addView(table);
         }
     }

@@ -55,6 +55,10 @@ public class HighFinishActivity extends BaseActivity implements AsyncResponse {
 
         //noinspection SimplifiableIfStatement
         switch (id) {
+            case R.id.best_leg_menu_text:
+                intent = new Intent(this, BestLegActivity.class);
+                this.startActivity(intent);
+                break;
             case R.id.fixtures_menu_text:
                 intent = new Intent(this, FixtureActivity.class);
                 this.startActivity(intent);

@@ -47,6 +47,10 @@
             android:name=".HighFinishActivity"
             android:label="@string/title_activity_high_finish" >
         </activity>
+        <activity
+            android:name=".BestLegActivity"
+            android:label="@string/title_activity_best_leg" >
+        </activity>
     </application>
 
 </manifest>

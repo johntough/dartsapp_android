@@ -1,0 +1,39 @@
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/HorizontalScrollViewWeek"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content">
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent">
+
+    <TableRow>
+        <TextView android:text="@string/name_label_text"
+            android:layout_width="200dp"
+            android:layout_column="0"
+            android:textSize="20sp">
+        </TextView>
+        <TextView android:text="@string/number_of_darts_label_text"
+            android:layout_width="200dp"
+            android:layout_column="1"
+            android:textSize="20sp">
+        </TextView>
+    </TableRow>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+            android:id="@+id/best_leg_activity"
+            android:layout_height="wrap_content" android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            tools:context="murrayfield.sportsbar.dartsapp.BestLegActivity">
+
+        </RelativeLayout>
+    </ScrollView>
+</TableLayout>
+</HorizontalScrollView>
